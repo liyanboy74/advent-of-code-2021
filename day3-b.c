@@ -22,89 +22,116 @@ uint32_t binToDec(char* Str)
     return Dec;
 }
 
+void DecToBin(uint32_t Dec,size_t Len)
+{
+    int i;
+    for(i=0;i<Len;i++)
+    {
+        if((Dec>>(Len-1-i))&1)putchar('1');
+        else putchar('0');
+    }
+}
+
 int main()
 {
     FILE *fp;
-    int i,j;
+    int a,i,j,c;
     int input;
 
     char buffer[16];
 
-    uint32_t Data[SIZE_OF_DATA];
+    uint32_t Data[DATA_BIT_LEN][SIZE_OF_DATA];
+    int Data_Size[DATA_BIT_LEN];
+
     uint32_t Temp=0,Temp2=0;
 
-    int BitC[DATA_BIT_LEN];
+    int BitC=0,BitL=0;
+    int DS;
 
     fp=fopen(FILE_NAME,"r");
     for(i=0;i<SIZE_OF_DATA;i++)
     {
         fscanf(fp,"%s",&buffer);
-        Data[i]=binToDec(buffer);
+        Data[0][i]=binToDec(buffer);
     }
     fclose(fp);
 
-    for(j=0;j<DATA_BIT_LEN;j++)
+    //-----------------------------------------------
+    DS=SIZE_OF_DATA;
+    Data_Size[0]=SIZE_OF_DATA;
+    for(j=0,BitL=0;j<DATA_BIT_LEN;j++,BitL++)
     {
-        BitC[DATA_BIT_LEN-1-j]=0;
-        for(i=0;i<SIZE_OF_DATA;i++)
+        for(BitC=0,i=0;i<DS;i++)
         {
-            if((Data[i]>>j)&1)BitC[DATA_BIT_LEN-1-j]++;
+            if((Data[j][i]>>(DATA_BIT_LEN-1-BitL))&1)BitC++;
         }
-    }
 
-    for(j=0;j<DATA_BIT_LEN;j++)
-    {
-        printf("%d ",BitC[j]);
-    }
-    puts("\r");
+        if(BitC>=(DS/2.0))a=1;else a=0;
 
-    for(j=0;j<DATA_BIT_LEN;j++)
-    {
-        if(BitC[j]>MIDDLE_OF_DATA) 
+        for(i=0,c=0;i<DS;i++)
         {
-            Temp|=(1<<(DATA_BIT_LEN-1-j));
-            putchar('1');
-        }
-        else
-        {
-            Temp2|=(1<<(DATA_BIT_LEN-1-j));
-            putchar('0');
-        }
-    }
-
-    printf("\r\n%d x %d = %ld\r\n",Temp,Temp2,Temp*Temp2);
-
-
-
-    /*
-    for(i=0;i<SIZE_OF_DATA;i++)
-    {
-        printf("%d ",Data[i]);
-    }
-    puts("\r\n");
-
-
-    //sort max to min
-    for(i=0;i<SIZE_OF_DATA;i++)
-    {
-        for(j=i+1;j<SIZE_OF_DATA;j++)
-        {
-            if(Data[i]<Data[j])
+            if(((Data[j][i]>>(DATA_BIT_LEN-1-BitL))&1)==a)
             {
-                Temp=Data[i];
-                Data[i]=Data[j];
-                Data[j]=Temp;
+                Data[j+1][c]=Data[j][i];
+                c++;
             }
         }
+        Data_Size[j+1]=c;
+        DS=c;
     }
 
-    for(i=0;i<SIZE_OF_DATA;i++)
+    for(i=0;i<DATA_BIT_LEN;i++)
+        printf("%d ",Data_Size[i]);
+    puts("\r");
+
+    for(j=0;j<5;j++)
     {
-        printf("%d ",Data[i]);
+        for(i=0;i<Data_Size[DATA_BIT_LEN-1-j];i++)
+        {
+            printf("%d: %d ",i,Data[DATA_BIT_LEN-1-j][i]);
+            DecToBin(Data[DATA_BIT_LEN-1-j][i],DATA_BIT_LEN);
+            puts("\r");
+        }
+        puts("-------------\r");
     }
-    puts("\r\n");
-    */
+    //-----------------------------------------------
+    DS=SIZE_OF_DATA;
+    Data_Size[0]=SIZE_OF_DATA;
+    for(j=0,BitL=0;j<DATA_BIT_LEN;j++,BitL++)
+    {
+        for(BitC=0,i=0;i<DS;i++)
+        {
+            if((Data[j][i]>>(DATA_BIT_LEN-1-BitL))&1)BitC++;
+        }
 
+        if(BitC>=(DS/2.0))a=1;else a=0;
+
+        for(i=0,c=0;i<DS;i++)
+        {
+            if(((Data[j][i]>>(DATA_BIT_LEN-1-BitL))&1)==!a)
+            {
+                Data[j+1][c]=Data[j][i];
+                c++;
+            }
+        }
+        Data_Size[j+1]=c;
+        DS=c;
+    }
+
+    for(i=0;i<DATA_BIT_LEN;i++)
+        printf("%d ",Data_Size[i]);
+    puts("\r");
+
+    for(j=0;j<5;j++)
+    {
+        for(i=0;i<Data_Size[DATA_BIT_LEN-1-j];i++)
+        {
+            printf("%d: %d ",i,Data[DATA_BIT_LEN-1-j][i]);
+            DecToBin(Data[DATA_BIT_LEN-1-j][i],DATA_BIT_LEN);
+            puts("\r");
+        }
+        puts("-------------\r");
+    }
 
     return 0;
 }
