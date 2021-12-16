@@ -17,14 +17,14 @@ int main()
     {
         fscanf(fp,"%d",&input);
         if(i==0)read=input;
-        printf("%d: %d",i,input);
+        //printf("%d: %d",i,input);
         if(input>read)
         {
             c++;
-            printf(" *");
+            //printf(" *");
         }
         read=input;
-        puts("\r\n");
+        //puts("\r\n");
     }
     printf("Ans is %d\r\n",c);
     fclose(fp);
