@@ -2,8 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
-#include <conio.h>
+//#include <time.h>
 
 #define NumBufferSize 200
 #define TableNum 100
@@ -19,8 +18,6 @@ int NumLen=0;
 bingo Table[TableNum];
 int Score[TableNum];
 int Score[TableNum];
-
-void delay(int number_of_seconds);
 
 void bingoClear(int id)
 {
@@ -193,7 +190,7 @@ int main()
     fclose(fp);
     return 0;
 }
-
+/*
 void delay(int milli_seconds)
 {
     // Storing start time
@@ -202,3 +199,4 @@ void delay(int milli_seconds)
     // looping till required time is not achieved
     while (clock() < start_time + milli_seconds);
 }
+*/
