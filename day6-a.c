@@ -12,7 +12,7 @@ typedef struct fishss{
     struct fishss *NEX;
 }fish_s;
 
-int NumLen=0;
+int NumLen;
 uint8_t NumBuffer[NumBufferSize];
 fish_s *head=NULL;
 long int listLen=0;
@@ -130,7 +130,7 @@ int main()
                 add(8);
             }
         }
-        printf("Day %02d\r\n",i);
+        printf("Day %02d\r\n",i+1);
     }
 
     //printList();
