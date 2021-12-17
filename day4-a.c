@@ -6,8 +6,8 @@
 #include <conio.h>
 
 #define NumBufferSize 200
-#define TableNum 3
-#define FILE_NAME "day4-data-test.txt"
+#define TableNum 100
+#define FILE_NAME "day4-data.txt"
 
 typedef struct{
     uint8_t mat[5][5];
@@ -30,7 +30,7 @@ void bingoClear(int id)
 void getNum(FILE *fp)
 {
     int i,index;
-    char NumSBuffer[NumBufferSize];
+    char NumSBuffer[500];
 
     fscanf(fp,"%s",&NumSBuffer);
     for(index=0,i=0;index<strlen(NumSBuffer);i++)
@@ -176,10 +176,10 @@ int main()
             {
                 Score[t]=i;
                 printf("--------------------\r\nWIN! (%d:%d)\r\n",Score[t],j);
-                delay(200);
+                delay(100);
                 break;
             }
-            delay(50);
+            delay(10);
         }
     }
     system("clear");
