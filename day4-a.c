@@ -169,17 +169,15 @@ int main()
         for(i=0;i<NumLen;i++)
         {
             j=CTable(t,NumBuffer[i]);
-            system("clear");
-            printf(" %02d: %02d : %s\r\n--------------------\r\n",i,NumBuffer[i],(j==-1)?"NF":"OK");
-            printTable(t);
+            //system("clear");
+            printf("%02d : %02d : %02d : %s\r\n",t,i,NumBuffer[i],(j==-1)?"NF":"OK");
+            //printf("--------------------\r\n");
+            //printTable(t);
             if(j=STable(t),j!=0)
             {
                 Score[t]=i;
-                printf("--------------------\r\nWIN! (%d:%d)\r\n",Score[t],j);
-                delay(100);
                 break;
             }
-            delay(10);
         }
     }
     system("clear");
