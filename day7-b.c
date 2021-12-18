@@ -3,13 +3,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h>
 
 #define DATA_LEN 1000
 #define FILE_NAME "day7-data.txt"
 
 int NumBuffer[DATA_LEN];
 int miror[DATA_LEN];
-int fuel[DATA_LEN];
+unsigned int fuel[DATA_LEN];
 
 void getNum(FILE *fp)
 {
@@ -21,19 +22,20 @@ void getNum(FILE *fp)
     }
 }
 
-void printNum(int * Data)
+void printNum(uint32_t * Data)
 {
     int i;
     for(i=0;i<DATA_LEN;i++)printf("%d ",Data[i]);
     printf("\r\n");
 }
 
-
 int main()
 {
-    int i,j;
     FILE *fp;
-    int Temp=0x0fffffff;
+
+    int i,j,s;
+    int l,k;
+    unsigned int Temp=0xffffffff;
 
     fp=fopen(FILE_NAME,"r");
     getNum(fp);
@@ -42,13 +44,19 @@ int main()
     {
         for(j=0;j<DATA_LEN;j++)
         {
-            miror[j]=abs(NumBuffer[i]-NumBuffer[j]);
+            miror[j]=0;
+            l=abs(NumBuffer[i]-NumBuffer[j]);
+
+            for(k=1;k<l+1;k++)
+            {
+                miror[j]=k+miror[j];
+            }
         }
 
         fuel[i]=0;
-        for(j=0;j<DATA_LEN;j++)
+        for(s=0;s<DATA_LEN;s++)
         {
-            fuel[i]+=miror[j];
+            fuel[i]+=miror[s];
         }
     }
 
@@ -61,7 +69,11 @@ int main()
         }
     }
 
-    printf("Min Fuel is %d at loc %d\r\n",Temp,NumBuffer[i]);
+    //printNum(fuel);
+    printf("Min Fuel is %ld at loc %d\r\n",Temp,NumBuffer[i]);
+
+    //for(int j=i-10;j<i+20;j++)
+    //printf("%ld\r\n",fuel[j]);
 
     fclose(fp);
     return 0;
